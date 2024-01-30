@@ -15,9 +15,8 @@ void draw_line(int x1, int x2, int yi, int y2) {
     dx = abs(x2 - x1);
     dy = abs(y2 - yi);  
 
-    incx = ( dx > 0 ) ? 1 : -1;
-    std::cout << "incx: " << incx << std::endl;
-    incy = (dy > 0) ? 1 : -1;
+    incx = ( x2 > x1 ) ? 1 : -1;
+    incy = (y2 > yi) ? 1 : -1;
 
     step = (dx > dy) ? dx : dy;
 
