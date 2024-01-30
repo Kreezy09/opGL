@@ -14,15 +14,12 @@ void draw_line(int x1, int x2, int yi, int y2) {
     int x, y, dx, dy,i, p, step, incx, incy;
     dx = abs(x2 - x1);
     dy = abs(y2 - yi);  
-    incx = 1;
-    if (x2 < x1) incx = -1;
-    incy = 1;
-    if (y2 < yi) incy = -1;
-    if (dx > dy){
-        step = dx;
-    } else {
-        step = dy;
-    }
+
+    incx = ( x2 > x1 ) ? 1 : -1;
+    incy = (y2 > yi) ? 1 : -1;
+
+    step = (dx > dy) ? dx : dy;
+
     x = x1;
     y = yi;
     draw_pixel(x, y);
@@ -46,7 +43,21 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0, 1.0, 1.0); // Set color to white
 
+       // Draw Y-axis
+    glBegin(GL_LINES);
+    glVertex2f(0, -10);  // Starting point of Y-axis
+    glVertex2f(0, 10);   // Ending point of Y-axis
+    glEnd();
+
+    // Draw X-axis
+    glBegin(GL_LINES);
+    glVertex2f(-10, 0);  // Starting point of X-axis
+    glVertex2f(10, 0);   // Ending point of X-axis
+    glEnd();
+
+    glColor3f(1.0, 1.0, 1.0); // Set color to white
     draw_line(x1, x2, yi, y2);
+
 
     glFlush();
 }

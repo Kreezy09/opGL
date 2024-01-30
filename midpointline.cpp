@@ -1,7 +1,7 @@
 #include <GL/glut.h>
 #include <iostream>
 
-int x2, y2, x3, y3;
+int x1, yi, x2, y2;
 
 void draw_pixel(int x, int y) {
     glBegin(GL_POINTS);
@@ -9,54 +9,37 @@ void draw_pixel(int x, int y) {
     glEnd();
 }
 
-void draw_line(int x2, int x3, int y2, int y3) {
-    int dx, dy, i, e;
-    int incx, incy, inc1, inc2;
-    int x, y;
+void draw_line(int x1, int x2, int yi, int y2) {
+    int x, y, dx, dy,i, d, dd, step, incx, incy;
 
-    dx = x3 - x2;
-    dy = y3 - y2;
+    dx = abs(x2 - x1);
+    dy = abs(y2 - yi);  
 
-    incx = 1;
-    if (dx < 0) incx = -1;
-    incy = 1;
-    if (dy < 0) incy = -1;
+    incx = ( dx > 0 ) ? 1 : -1;
+    std::cout << "incx: " << incx << std::endl;
+    incy = (dy > 0) ? 1 : -1;
 
-    x = x2;
-    y = y2;
+    step = (dx > dy) ? dx : dy;
+
+    x = x1;
+    y = yi;
 
     draw_pixel(x, y);
 
-    if (dx > dy) {
-        e = 2 * dy - dx;
-        inc1 = 2 * (dy - dx);
-        inc2 = 2 * dy;
+    d = 2 * dy - dx;
+    dd = 2 * (dy - dx);
 
-        for (i = 0; i < dx; i++) {
-            if (e >= 0) {
-                y += incy;
-                e += inc1;
-            } else {
-                e += inc2;
-            }
+    for ( i=0; i<step; i++){
+        if ( d < 0){
+            d += 2 * dy;
             x += incx;
-            draw_pixel(x, y);
-        }
-    } else {
-        e = 2 * dx - dy;
-        inc1 = 2 * (dx - dy);
-        inc2 = 2 * dx;
-
-        for (i = 0; i < dy; i++) {
-            if (e >= 0) {
-                y += incy;
-                e += inc1;
-            } else {
-                e += inc2;
-            }
+        } else {
+            d += dd;
             x += incx;
-            draw_pixel(x, y);
+            y += incy;
         }
+        draw_pixel(x, y);
+        std::cout << "x: " << x << ", y: " << y << std::endl;
     }
 }
 
@@ -82,7 +65,7 @@ void display() {
     glEnd();
 
     glColor3f(1.0, 0.0, 0.0); // Set color to red
-    draw_line(x2, x3, y2, y3);
+    draw_line(x1, x2, yi, y2);
 
     glFlush();
 }
@@ -93,8 +76,8 @@ void myInit() {
 }
 
 int main(int argc, char **argv) {
-    printf("Enter (x2, y2, x3, y3)\n");
-    scanf("%d %d %d %d", &x2, &y2, &x3, &y3);
+    printf("Enter (x1, yi, x2, y2)\n");
+    scanf("%d %d %d %d", &x1, &yi, &x2, &y2);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
